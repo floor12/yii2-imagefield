@@ -1,6 +1,6 @@
 {
-    "name": "floor12/image-field",
-    "description": "ImageField for Yii2.",
+    "name": "floor12/imagefield",
+    "description": "ImageField for Yii2",
     "type": "yii2-extension",
     "minimum-stability": "stable",
     "keywords": [
@@ -27,7 +27,7 @@
     },
     "autoload": {
         "psr-4": {
-            "floor12\\image-field\\": "src"
+            "floor12\\imagefield\\": "src"
         }
     },
     "extra": {
