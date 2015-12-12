@@ -1,7 +1,8 @@
 {
-    "name": "floor12/imageField",
+    "name": "floor12/image-field",
     "description": "ImageField for Yii2.",
     "type": "yii2-extension",
+    "minimum-stability": "stable",
     "keywords": [
         "floor12",
         "yii",
