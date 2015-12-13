@@ -73,6 +73,7 @@ class ImageBehavior extends Behavior {
 
     public function imageForm() {
         ImageFieldAsset::register(\Yii::$app->view);
+        CropperAsset::register(\Yii::$app->view);
         $content = '';
         if ($this->images)
             foreach ($this->images as $image)

@@ -59,8 +59,12 @@ class Image extends \yii\db\ActiveRecord {
         return Yii::getAlias('@web') . '/' . Image::IMAGEFIELD_DIR . '/' . $this->file;
     }
 
+    public function getRealPath() {
+        return Yii::getAlias('@webroot') . '/' . Image::IMAGEFIELD_DIR . '/' . $this->file;
+    }
+
     public function afterDelete() {
-        unlink(Yii::getAlias('@webroot') . '/' . Image::IMAGEFIELD_DIR . '/' . $this->file);
+        unlink($this->realPath);
         parent::afterDelete();
     }
 

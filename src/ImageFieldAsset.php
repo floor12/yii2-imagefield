@@ -10,6 +10,9 @@ use yii\web\AssetBundle;
  */
 class ImageFieldAsset extends AssetBundle {
 
+    public $publishOptions = [
+        'forceCopy' => true,
+    ];
     public $sourcePath = '@vendor/floor12/imagefield/assets/';
     public $css = [
         'imagefield.css'

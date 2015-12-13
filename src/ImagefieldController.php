@@ -17,6 +17,7 @@ class ImagefieldController extends Controller {
                 'actions' => [
                     'delete' => ['post'],
                     'create' => ['post'],
+                    'crop' => ['post'],
                 ],
             ],
             'access' => [
@@ -29,6 +30,33 @@ class ImagefieldController extends Controller {
                 ],
             ],
         ];
+    }
+
+    public function actionCrop() {
+        $image = Image::findOne(Yii::$app->request->post('id'));
+        if (!$image)
+            throw new BadRequestHttpException();
+        $src = self::imageCreateFromAny($image->realPath);
+        $dest = imagecreatetruecolor(Yii::$app->request->post('width'), Yii::$app->request->post('height'));
+        imagecopy($dest, $src, 0, 0, Yii::$app->request->post('left'), Yii::$app->request->post('top'), Yii::$app->request->post('width'), Yii::$app->request->post('height'));
+
+        $newName = md5(time() . rand(0, 1000)) . ".jpeg";
+        imagejpeg($dest, Yii::getAlias('@webroot') . '/' . Image::IMAGEFIELD_DIR . '/' . $newName, 80);
+        imagedestroy($dest);
+        imagedestroy($src);
+
+        if (Yii::$app->request->post('createNew')) {
+            $newImage = new Image;
+            $newImage->class = $image->class;
+            $newImage->file = $newName;
+            $newImage->save();
+            echo Yii::$app->view->renderFile('@vendor/floor12/imagefield/views/_form.php', ['image' => $newImage, 'class' => $newImage->class, 'hidden' => 1]);
+        } else {
+            unlink(Yii::getAlias('@webroot') . '/' . Image::IMAGEFIELD_DIR . '/' . $image->file);
+            $image->file = $newName;
+            $image->save();
+            echo Yii::$app->view->renderFile('@vendor/floor12/imagefield/views/_form.php', ['image' => $image, 'class' => $image->class]);
+        }
     }
 
     public function actionDelete() {
@@ -61,6 +89,34 @@ class ImagefieldController extends Controller {
         } else {
             throw new BadRequestHttpException();
         }
+    }
+
+    public static function imageCreateFromAny($filepath) {
+        $type = exif_imagetype($filepath); // [] if you don't have exif you could use getImageSize() 
+        $allowedTypes = array(
+            1, // [] gif 
+            2, // [] jpg 
+            3, // [] png 
+            6   // [] bmp 
+        );
+        if (!in_array($type, $allowedTypes)) {
+            return false;
+        }
+        switch ($type) {
+            case 1 :
+                $im = imageCreateFromGif($filepath);
+                break;
+            case 2 :
+                $im = imageCreateFromJpeg($filepath);
+                break;
+            case 3 :
+                $im = imageCreateFromPng($filepath);
+                break;
+            case 6 :
+                $im = imageCreateFromBmp($filepath);
+                break;
+        }
+        return $im;
     }
 
 }
