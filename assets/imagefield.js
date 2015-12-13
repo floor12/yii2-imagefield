@@ -5,7 +5,6 @@
  */
 
 var curObj;
-
 function draggble() {
     $('div.imagefield-image').draggable({
         cursor: "move",
@@ -18,7 +17,6 @@ function draggble() {
             $(this).attr('style', '');
         },
     });
-
     $('div.imagefield-image').droppable({
         drop: function (event, ui) {
             curObj.insertBefore($(this));
@@ -34,7 +32,6 @@ $(document).ready(function () {
     setInterval(function () {
         draggble();
     }, 3000);
-
     $('#image-field-add').uploaderZ({
         'action': '/imagefield/create/',
         'fieldName': 'image[]',
@@ -47,22 +44,38 @@ $(document).ready(function () {
             }
         }
     });
+    $(document).on('mouseover', '.imagefield-image', function () {
+        $(this).find('.imagefield-control').stop().fadeIn(200);
+    })
+    $(document).on('mouseout', '.imagefield-image', function () {
+        $(this).find('.imagefield-control').stop().fadeOut(200);
+    })
+
+    $(document).on('mouseover', '.imagefield-control', function () {
+        $(this).stop().fadeIn(200);
+    })
+    $(document).on('mouseout', '.imagefield-control', function () {
+        $(this).stop().fadeOut(200);
+    })
+
 
 
     $(document).on('click', '.imagefield-delete', function () {
         var obj = $(this);
-        $.ajax({
-            method: "post",
-            url: '/imagefield/delete/',
-            data: 'id=' + obj.attr('data-id'),
-            success: function (msg) {
-                if (msg = '1') {
-                    obj.parent().fadeOut(500, function () {
-                        $(this).remove();
-                    });
+        if (confirm("Удалить изображение?"))
+            $.ajax({
+                method: "post",
+                url: '/imagefield/delete/',
+                data: 'id=' + obj.attr('data-id'),
+                success: function (msg) {
+                    if (msg = '1') {
+                        obj.parent().parent().parent().fadeOut(500, function () {
+                            $(this).remove();
+                        });
+                    }
                 }
-            }
-        })
+            })
+
     })
 
 });

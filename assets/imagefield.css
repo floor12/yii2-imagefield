@@ -12,19 +12,14 @@ and open the template in the editor.
     display: none;
 }
 
-.imagefield-delete {
+.imagefield-control {
     position: absolute;
-    z-index: 9999;
-    display: block;
-    color: #5F5F5F;
-    font-size: 120%;
-    margin: -8px;
-    cursor: pointer;
+    background-color: rgba(1,1,1,0.5);
+    padding: 10px;
+    margin: 6px;
+    display: none;
 }
 
-.imagefield-delete:hover {
-    color: red;
-}
 
 #imagefield-images {
     margin-top: 20px;
