@@ -20,7 +20,7 @@ class ImageFieldAsset extends AssetBundle {
     ];
     public $depends = [
         'yii\web\YiiAsset',
-        'yii\jui\CoreAsset',
+        'yii\jui\JuiAsset',
         'yii\bootstrap\BootstrapAsset',
     ];
 

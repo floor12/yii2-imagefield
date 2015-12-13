@@ -22,6 +22,7 @@ function draggble() {
     $('div.imagefield-image').droppable({
         drop: function (event, ui) {
             curObj.insertBefore($(this));
+            curObj.removeClass('myhidden');
         }
     });
 }
