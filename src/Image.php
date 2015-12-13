@@ -1,8 +1,8 @@
 <?php
 
-namespace floor12\imageField;
+namespace floor12\imagefield;
 
-use Yii;
+use yii;
 
 /**
  * This is the model class for table "image".
@@ -14,6 +14,16 @@ use Yii;
  * @property integer $order
  */
 class Image extends \yii\db\ActiveRecord {
+
+    const IMAGEFIELD_DIR = 'images';
+
+    public static function getAllowed() {
+        return [
+            'image/jpeg',
+            'image/png',
+            'image/gif'
+        ];
+    }
 
     /**
      * @inheritdoc
@@ -43,6 +53,15 @@ class Image extends \yii\db\ActiveRecord {
             'object_id' => 'Object ID',
             'order' => 'Order',
         ];
+    }
+
+    public function getPath() {
+        return Yii::getAlias('@web') . '/' . Image::IMAGEFIELD_DIR . '/' . $this->file;
+    }
+
+    public function afterDelete() {
+        unlink(Yii::getAlias('@webroot') . '/' . Image::IMAGEFIELD_DIR . '/' . $this->file);
+        parent::afterDelete();
     }
 
 }
