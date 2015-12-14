@@ -13,7 +13,7 @@ class ImageFieldAsset extends AssetBundle {
     public $publishOptions = [
         'forceCopy' => true,
     ];
-    public $sourcePath = '@vendor/floor12/imagefield/assets/';
+    public $sourcePath = '@vendor/floor12/yii2-imagefield/assets/';
     public $css = [
         'imagefield.css'
     ];

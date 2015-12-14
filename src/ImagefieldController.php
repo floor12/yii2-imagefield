@@ -50,12 +50,12 @@ class ImagefieldController extends Controller {
             $newImage->class = $image->class;
             $newImage->file = $newName;
             $newImage->save();
-            echo Yii::$app->view->renderFile('@vendor/floor12/imagefield/views/_form.php', ['image' => $newImage, 'class' => $newImage->class, 'hidden' => 1]);
+            echo Yii::$app->view->renderFile('@vendor/floor12/yii2-imagefield/views/_form.php', ['image' => $newImage, 'class' => $newImage->class, 'hidden' => 1]);
         } else {
             unlink(Yii::getAlias('@webroot') . '/' . Image::IMAGEFIELD_DIR . '/' . $image->file);
             $image->file = $newName;
             $image->save();
-            echo Yii::$app->view->renderFile('@vendor/floor12/imagefield/views/_form.php', ['image' => $image, 'class' => $image->class]);
+            echo Yii::$app->view->renderFile('@vendor/floor12/yii2-imagefield/views/_form.php', ['image' => $image, 'class' => $image->class]);
         }
     }
 
@@ -83,7 +83,7 @@ class ImagefieldController extends Controller {
                 $image->file = $fileName;
                 $image->class = $className;
                 if ($image->save())
-                    $ret .= Yii::$app->view->renderFile('@vendor/floor12/imagefield/views/_form.php', ['image' => $image, 'class' => $className, 'hidden' => 1]);
+                    $ret .= Yii::$app->view->renderFile('@vendor/floor12/yii2-imagefield/views/_form.php', ['image' => $image, 'class' => $className, 'hidden' => 1]);
             }
             echo $ret;
         } else {

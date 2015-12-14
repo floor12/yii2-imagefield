@@ -77,8 +77,8 @@ class ImageBehavior extends Behavior {
         $content = '';
         if ($this->images)
             foreach ($this->images as $image)
-                $content.= \Yii::$app->view->renderFile('@vendor/floor12/imagefield/views/_form.php', ['image' => $image, 'class' => \yii\helpers\StringHelper::basename(get_class($this->owner))]);
-        return \Yii::$app->view->renderFile('@vendor/floor12/imagefield/views/form.php', ['images' => $content, 'className' => \yii\helpers\StringHelper::basename(get_class($this->owner))]);
+                $content.= \Yii::$app->view->renderFile('@vendor/floor12/yii2-imagefield/views/_form.php', ['image' => $image, 'class' => \yii\helpers\StringHelper::basename(get_class($this->owner))]);
+        return \Yii::$app->view->renderFile('@vendor/floor12/yii2-imagefield/views/form.php', ['images' => $content, 'className' => \yii\helpers\StringHelper::basename(get_class($this->owner))]);
     }
 
 }
