@@ -14,10 +14,10 @@ class PgwSliderAsset extends AssetBundle {
 
     public $sourcePath = '@bower';
     public $css = [
-        'cropper/dist/pgwslider.min.css',
+        'pgwslider/pgwslider.min.css',
     ];
     public $js = [
-        'cropper/dist/pgwslider.min.js',
+        'pgwslider/pgwslider.min.js',
     ];
     public $depends = [
         'yii\web\JqueryAsset',

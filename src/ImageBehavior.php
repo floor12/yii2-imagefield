@@ -81,4 +81,25 @@ class ImageBehavior extends Behavior {
         return \Yii::$app->view->renderFile('@vendor/floor12/yii2-imagefield/views/form.php', ['images' => $content, 'className' => \yii\helpers\StringHelper::basename(get_class($this->owner))]);
     }
 
+    public function slider($param) {
+        PgwSliderAsset::register(\Yii::$app->view);
+        $content = '';
+        $paramsSting = '';
+
+        if (isset($param['pgwParams']))
+            foreach ($param['pgwParams'] as $key => $parametr) {
+                if ($parametr === false)
+                    $parametr = 'false';
+                $paramsSting .= "{$key} : " . $parametr . ", ";
+            }
+
+        if ($this->images)
+            foreach ($this->images as $key => $image) {
+                if (isset($param['showFirstImage']) && $param['showFirstImage'] == false && ($key == 0))
+                    continue;
+                $content.= \Yii::$app->view->renderFile('@vendor/floor12/yii2-imagefield/views/_slider.php', ['image' => $image]);
+            }
+        return \Yii::$app->view->renderFile('@vendor/floor12/yii2-imagefield/views/slider.php', ['images' => $content, 'pgwParams' => $paramsSting]);
+    }
+
 }

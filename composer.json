@@ -25,7 +25,7 @@
         "yiisoft/yii2": "~2.0.0",
         "yiisoft/yii2-jui": "*",
         "bower-asset/cropper": "*",
-        "bower-asset/pgwslider": "*"
+        "bower-asset/pgwslider": "^2.3"
     },
     "autoload": {
         "psr-4": {
