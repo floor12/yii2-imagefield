@@ -37,3 +37,7 @@ div.imagefield-image img {
 .myhidden {
     display: none;
 }
+
+#process {
+    display: none;
+}

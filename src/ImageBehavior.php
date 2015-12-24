@@ -33,17 +33,16 @@ class ImageBehavior extends Behavior {
 
     public function imagesUpdate() {
         $order = 0;
-        if ($this->imageArray)
-            foreach ($this->imageArray as $id) {
-                $img = Image::findOne($id);
-                $img->object_id = $this->owner->id;
-                $img->order = $order;
-                $img->save();
-                $order++;
-                if (!$img->save()) {
-                    print_r($img->getErrors());
-                }
+        foreach ($this->imageArray as $id) {
+            $img = Image::findOne($id);
+            $img->object_id = $this->owner->id;
+            $img->order = $order;
+            $img->save();
+            $order++;
+            if (!$img->save()) {
+                print_r($img->getErrors());
             }
+        }
     }
 
     function __construct() {

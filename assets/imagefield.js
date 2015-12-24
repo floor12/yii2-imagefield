@@ -36,18 +36,59 @@ $(document).ready(function () {
     setInterval(function () {
         draggble();
     }, 3000);
-    $('#image-field-add').uploaderZ({
-        'action': '/imagefield/create/',
-        'fieldName': 'image[]',
-        'csrfParam': csrfParam,
-        'csrfToken': csrfToken,
-        'data': {'class': className},
-        'complite': function (msg) {
-            if (msg != '0') {
-                $(msg).appendTo('#imagefield-images').fadeIn(500);
+
+    var uploader = new ss.SimpleUpload({
+        button: '#image-field-add', // HTML element used as upload button
+        url: '/imagefield/create/', // URL of server-side upload handler
+        name: 'image[]',
+        noParams: true,
+        multiple: true,
+        maxUploads: 10,
+        multipart: true,
+        data: {'_csrf': csrfToken, class: className},
+        onSubmit: function (filename, extension) {
+            $('#process').show();
+            this.setProgressBar($('#progressBar')); // designate as progress bar
+        },
+        onComplete: function (filename, response) {
+            $('#process').hide();
+            if (!response) {
+                alert(filename + 'upload failed');
+                return false;
             }
+            $(response).appendTo('#imagefield-images').fadeIn(500);
         }
     });
+
+
+//    $('#image-field-add').uploaderZ({
+//        'action': '/imagefield/create/',
+//        'fieldName': 'image[]',
+//        'csrfParam': csrfParam,
+//        'csrfToken': csrfToken,
+//        'data': {'class': className},
+//        'complite': function (msg) {
+//            if (msg != '0') {
+//                $(msg).appendTo('#imagefield-images').fadeIn(500);
+//            }
+//        }
+//    });
+
+    $(function () {
+        $('#fileupload').fileupload({
+            dataType: 'json',
+            done: function (e, data) {
+                $.each(data.result.files, function (index, file) {
+                    $('<p/>').text(file.name).appendTo(document.body);
+                });
+            }
+        });
+    });
+
+
+
+
+
     $(document).on('mouseover', '.imagefield-image', function () {
         $(this).find('.imagefield-control').stop().fadeIn(200);
     })

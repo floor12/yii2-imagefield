@@ -19,7 +19,7 @@ class ImageFieldAsset extends AssetBundle {
     ];
     public $js = [
         'imagefield.js',
-        'uploaderZ.js'
+        'SimpleAjaxUploader.min.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',
