@@ -88,10 +88,12 @@ class Image extends \yii\db\ActiveRecord
 
     public function updatePreview()
     {
-        $image = new SimpleImage();
-        $image->load($this->realPath);
-        $image->resizeToWidth(350);
-        $image->save($this->realPreviewPath);
+        if (file_exists($this->realPath)) {
+            $image = new SimpleImage();
+            $image->load($this->realPath);
+            $image->resizeToWidth(350);
+            $image->save($this->realPreviewPath);
+        }
     }
 
     public function afterDelete()
