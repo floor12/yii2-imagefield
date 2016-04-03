@@ -8,9 +8,11 @@ use yii\web\UploadedFile;
 use yii\web\BadRequestHttpException;
 use Yii;
 
-class ImagefieldController extends Controller {
+class ImagefieldController extends Controller
+{
 
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
             'verbs' => [
                 'class' => VerbFilter::className(),
@@ -32,7 +34,8 @@ class ImagefieldController extends Controller {
         ];
     }
 
-    public function actionCrop() {
+    public function actionCrop()
+    {
         $image = Image::findOne(Yii::$app->request->post('id'));
         if (!$image)
             throw new BadRequestHttpException();
@@ -59,9 +62,10 @@ class ImagefieldController extends Controller {
         }
     }
 
-    public function actionDelete() {
+    public function actionDelete()
+    {
 
-        $id = (int) Yii::$app->request->post('id');
+        $id = (int)Yii::$app->request->post('id');
         $image = Image::findOne($id);
         if ($image->delete())
             echo 1;
@@ -69,7 +73,8 @@ class ImagefieldController extends Controller {
             echo 0;
     }
 
-    public function actionCreate() {
+    public function actionCreate()
+    {
         $files = UploadedFile::getInstancesByName('image');
         $className = Yii::$app->request->post('class');
         if ((sizeof($files) > 0) && ($className)) {
@@ -91,7 +96,18 @@ class ImagefieldController extends Controller {
         }
     }
 
-    public static function imageCreateFromAny($filepath) {
+    public function actionPreview()
+    {
+        $images = Image::find()->all();
+        if ($images) foreach ($images as $image) {
+            $image->updatePreview();
+            echo "updating {$image->id} <br>";
+
+        }
+    }
+
+    public static function imageCreateFromAny($filepath)
+    {
         $type = exif_imagetype($filepath); // [] if you don't have exif you could use getImageSize() 
         $allowedTypes = array(
             1, // [] gif 
