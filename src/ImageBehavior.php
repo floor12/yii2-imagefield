@@ -78,7 +78,7 @@ class ImageBehavior extends Behavior
     public function getImages()
     {
         if ($this->owner->id)
-            return Image::find()->orderBy('order')->where(['object_id' => $this->owner->id, 'class' => \yii\helpers\StringHelper::basename(get_class($this->owner))])->all();
+            return Image::find()->orderBy('order')->where(['field' => null, 'object_id' => $this->owner->id, 'class' => \yii\helpers\StringHelper::basename(get_class($this->owner))])->all();
     }
 
     public function imageForm()

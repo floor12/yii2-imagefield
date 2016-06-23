@@ -16,6 +16,7 @@ class m151212_072004_create_images extends Migration {
             'id' => $this->primaryKey(),
             'file' => $this->string(255),
             'class' => $this->string(255),
+            'field' => $this->string(255),
             'object_id' => $this->integer(),
             'order' => $this->integer(),
                 ], $tableOptions);

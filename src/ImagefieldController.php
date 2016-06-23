@@ -58,7 +58,10 @@ class ImagefieldController extends Controller
             unlink(Yii::getAlias('@webroot') . '/' . Image::IMAGEFIELD_DIR . '/' . $image->file);
             $image->file = $newName;
             $image->save();
-            echo Yii::$app->view->renderFile('@vendor/floor12/yii2-imagefield/views/_form.php', ['image' => $image, 'class' => $image->class]);
+            if (Yii::$app->request->post('field'))
+                echo Yii::$app->view->renderFile('@vendor/floor12/yii2-imagefield/views/_singleForm.php', ['field' => Yii::$app->request->post('field'), 'image' => $image, 'class' => $image->class]);
+            else
+                echo Yii::$app->view->renderFile('@vendor/floor12/yii2-imagefield/views/_form.php', ['image' => $image, 'class' => $image->class]);
         }
     }
 
@@ -67,13 +70,15 @@ class ImagefieldController extends Controller
 
         $id = (int)Yii::$app->request->post('id');
         $image = Image::findOne($id);
-        if ($image->delete())
+        if ($image->delete()) {
             echo 1;
-        else
+        } else
             echo 0;
+
     }
 
-    public function actionCreate()
+    public
+    function actionCreate()
     {
         $files = UploadedFile::getInstancesByName('image');
         $className = Yii::$app->request->post('class');
@@ -87,8 +92,14 @@ class ImagefieldController extends Controller
                 $image = new Image();
                 $image->file = $fileName;
                 $image->class = $className;
-                if ($image->save())
-                    $ret .= Yii::$app->view->renderFile('@vendor/floor12/yii2-imagefield/views/_form.php', ['image' => $image, 'class' => $className, 'hidden' => 1]);
+                if (Yii::$app->request->post('field'))
+                    $image->field = Yii::$app->request->post('field');
+                if ($image->save()) {
+                    if (Yii::$app->request->post('field'))
+                        $ret .= Yii::$app->view->renderFile('@vendor/floor12/yii2-imagefield/views/_singleForm.php', ['field' => $image->field, 'image' => $image, 'class' => $className, 'hidden' => 0]);
+                    else
+                        $ret .= Yii::$app->view->renderFile('@vendor/floor12/yii2-imagefield/views/_form.php', ['image' => $image, 'class' => $className, 'hidden' => 1]);
+                }
             }
             echo $ret;
         } else {
@@ -96,7 +107,8 @@ class ImagefieldController extends Controller
         }
     }
 
-    public function actionPreview()
+    public
+    function actionPreview()
     {
         $images = Image::find()->all();
         if ($images) foreach ($images as $image) {
@@ -106,14 +118,15 @@ class ImagefieldController extends Controller
         }
     }
 
-    public static function imageCreateFromAny($filepath)
+    public
+    static function imageCreateFromAny($filepath)
     {
-        $type = exif_imagetype($filepath); // [] if you don't have exif you could use getImageSize() 
+        $type = exif_imagetype($filepath); // [] if you don't have exif you could use getImageSize()
         $allowedTypes = array(
-            1, // [] gif 
-            2, // [] jpg 
-            3, // [] png 
-            6   // [] bmp 
+            1, // [] gif
+            2, // [] jpg
+            3, // [] png
+            6   // [] bmp
         );
         if (!in_array($type, $allowedTypes)) {
             return false;

@@ -14,12 +14,11 @@ and open the template in the editor.
 
 .imagefield-control {
     position: absolute;
-    background-color: rgba(1,1,1,0.5);
+    background-color: rgba(1, 1, 1, 0.5);
     padding: 10px;
     margin: 6px;
     display: none;
 }
-
 
 #imagefield-images {
     margin-top: 20px;
@@ -40,4 +39,8 @@ div.imagefield-image img {
 
 #process {
     display: none;
+}
+
+.imagefield-image-single {
+    max-width: 250px;
 }

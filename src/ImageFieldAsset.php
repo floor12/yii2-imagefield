@@ -8,7 +8,8 @@ use yii\web\AssetBundle;
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class ImageFieldAsset extends AssetBundle {
+class ImageFieldAsset extends AssetBundle
+{
 
     public $publishOptions = [
         'forceCopy' => true,
@@ -18,6 +19,7 @@ class ImageFieldAsset extends AssetBundle {
         'imagefield.css'
     ];
     public $js = [
+        'commonimagefield.js',
         'imagefield.js',
         'SimpleAjaxUploader.min.js'
     ];
