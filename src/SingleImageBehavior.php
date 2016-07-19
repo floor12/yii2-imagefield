@@ -39,10 +39,18 @@ class SingleImageBehavior extends Behavior
     public function singleImagesUpdate()
     {
         $order = 0;
-//        print_r($this->singleImageArray);
-//        die();
         if ($this->singleImageArray)
             foreach ($this->singleImageArray as $field => $id) {
+
+                $oldImages = Image::find()->where([
+                    'class' => \yii\helpers\StringHelper::basename(get_class($this->owner)),
+                    'object_id' => $this->owner->id,
+                    'field' => $field,
+                ])->all();
+                if ($oldImages) foreach ($oldImages as $oldImage)
+                    $oldImage->delete();
+
+
                 $img = Image::findOne($id);
                 $img->object_id = $this->owner->id;
                 $img->order = $order;

@@ -53,15 +53,23 @@ class ImagefieldController extends Controller
             $newImage->class = $image->class;
             $newImage->file = $newName;
             $newImage->save();
-            echo Yii::$app->view->renderFile('@vendor/floor12/yii2-imagefield/views/_form.php', ['image' => $newImage, 'class' => $newImage->class, 'hidden' => 1]);
+            if (Yii::$app->request->post('json'))
+                return json_encode(['id' => $newImage->id, 'src' => $newImage->path]);
+            else
+                echo Yii::$app->view->renderFile('@vendor/floor12/yii2-imagefield/views/_form.php', ['image' => $newImage, 'class' => $newImage->class, 'hidden' => 1]);
+
         } else {
             unlink(Yii::getAlias('@webroot') . '/' . Image::IMAGEFIELD_DIR . '/' . $image->file);
             $image->file = $newName;
             $image->save();
-            if (Yii::$app->request->post('field'))
-                echo Yii::$app->view->renderFile('@vendor/floor12/yii2-imagefield/views/_singleForm.php', ['field' => Yii::$app->request->post('field'), 'image' => $image, 'class' => $image->class]);
-            else
-                echo Yii::$app->view->renderFile('@vendor/floor12/yii2-imagefield/views/_form.php', ['image' => $image, 'class' => $image->class]);
+            if (Yii::$app->request->post('json'))
+                return json_encode(['id' => $image->id, 'src' => $image->path]);
+            else {
+                if (Yii::$app->request->post('field'))
+                    echo Yii::$app->view->renderFile('@vendor/floor12/yii2-imagefield/views/_singleForm.php', ['field' => Yii::$app->request->post('field'), 'image' => $image, 'class' => $image->class]);
+                else
+                    echo Yii::$app->view->renderFile('@vendor/floor12/yii2-imagefield/views/_form.php', ['image' => $image, 'class' => $image->class]);
+            }
         }
     }
 
@@ -88,17 +96,33 @@ class ImagefieldController extends Controller
                 if (array_search($fileInstance->type, Image::getAllowed()) === false)
                     continue;
                 $fileName = md5(time() . $fileInstance->tempName) . "." . $fileInstance->extension;
-                $fileInstance->saveAs(Yii::getAlias('@webroot') . DIRECTORY_SEPARATOR . Image::IMAGEFIELD_DIR . DIRECTORY_SEPARATOR . $fileName);
+                $path = Yii::getAlias('@webroot') . DIRECTORY_SEPARATOR . Image::IMAGEFIELD_DIR . DIRECTORY_SEPARATOR . $fileName;
+                $fileInstance->saveAs($path);
+
+
+                $simpleImage = new SimpleImage();
+                $simpleImage->load($path);
+
+                if ($simpleImage->getWidth() > 1920 || $simpleImage->getHeight() > 1080) {
+                    $simpleImage->resizeToWidth(1920);
+                    $simpleImage->save($path);
+                }
+
+
                 $image = new Image();
                 $image->file = $fileName;
                 $image->class = $className;
                 if (Yii::$app->request->post('field'))
                     $image->field = Yii::$app->request->post('field');
                 if ($image->save()) {
-                    if (Yii::$app->request->post('field'))
-                        $ret .= Yii::$app->view->renderFile('@vendor/floor12/yii2-imagefield/views/_singleForm.php', ['field' => $image->field, 'image' => $image, 'class' => $className, 'hidden' => 0]);
-                    else
-                        $ret .= Yii::$app->view->renderFile('@vendor/floor12/yii2-imagefield/views/_form.php', ['image' => $image, 'class' => $className, 'hidden' => 1]);
+                    if (Yii::$app->request->post('json')) {
+                        return json_encode(['id' => $image->id, 'src' => $image->path]);
+                    } else {
+                        if (Yii::$app->request->post('field'))
+                            $ret .= Yii::$app->view->renderFile('@vendor/floor12/yii2-imagefield/views/_singleForm.php', ['field' => $image->field, 'image' => $image, 'class' => $className, 'hidden' => 0]);
+                        else
+                            $ret .= Yii::$app->view->renderFile('@vendor/floor12/yii2-imagefield/views/_form.php', ['image' => $image, 'class' => $className, 'hidden' => 1]);
+                    }
                 }
             }
             echo $ret;
