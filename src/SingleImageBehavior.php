@@ -48,8 +48,7 @@ class SingleImageBehavior extends Behavior
                     'field' => $field,
                 ])->all();
                 if ($oldImages) foreach ($oldImages as $oldImage)
-                    $oldImage->delete();
-
+                    $oldImage->unsetit();
 
                 $img = Image::findOne($id);
                 $img->object_id = $this->owner->id;

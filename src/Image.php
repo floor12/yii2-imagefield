@@ -71,7 +71,7 @@ class Image extends \yii\db\ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         $this->updatePreview();
-        parent::afterSave($insert, $changedAttributes); 
+        parent::afterSave($insert, $changedAttributes);
     }
 
     public function updatePreview()
@@ -89,6 +89,12 @@ class Image extends \yii\db\ActiveRecord
         @unlink($this->realPath);
         @unlink($this->realPreviewPath);
         parent::afterDelete();
+    }
+
+    public function unsetit()
+    {
+        $this->object_id = 0;
+        $this->save();
     }
 
 }
