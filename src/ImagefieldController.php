@@ -112,6 +112,10 @@ class ImagefieldController extends Controller
                 $image = new Image();
                 $image->file = $fileName;
                 $image->class = $className;
+
+                $tmp = explode('\\', $className);
+
+
                 if (Yii::$app->request->post('field'))
                     $image->field = Yii::$app->request->post('field');
                 if ($image->save()) {
@@ -119,7 +123,7 @@ class ImagefieldController extends Controller
                         return json_encode(['id' => $image->id, 'src' => $image->path]);
                     } else {
                         if (Yii::$app->request->post('field'))
-                            $ret .= Yii::$app->view->renderFile('@vendor/floor12/yii2-imagefield/views/_singleForm.php', ['field' => $image->field, 'image' => $image, 'class' => $className, 'hidden' => 0]);
+                            $ret .= Yii::$app->view->renderFile('@vendor/floor12/yii2-imagefield/views/_singleForm.php', ['field' => $image->field, 'image' => $image, 'class' => $tmp[2], 'hidden' => 0]);
                         else
                             $ret .= Yii::$app->view->renderFile('@vendor/floor12/yii2-imagefield/views/_form.php', ['image' => $image, 'class' => $className, 'hidden' => 1]);
                     }

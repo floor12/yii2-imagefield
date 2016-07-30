@@ -9,7 +9,7 @@
 ?>
 
 <script>
-    var className = '<?= $class ?>';
+    var className = '<?= str_replace("\\", "\\\\", $classname) ?>';
     var csrfToken = '<?= Yii::$app->request->csrfToken; ?>';
     var csrfParam = '<?= Yii::$app->request->csrfParam; ?>';
 </script>
@@ -35,9 +35,6 @@
 
 $this->registerJs("
 
-    var className = '{$class}';
-    var csrfToken = '" . Yii::$app->request->csrfToken . "';
-    var csrfParam = '" . Yii::$app->request->csrfParam . "';
 
     new ss.SimpleUpload({
         button: $('#singleFieldUploadButton_{$field}'), // HTML element used as upload button

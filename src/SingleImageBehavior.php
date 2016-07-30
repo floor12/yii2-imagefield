@@ -23,7 +23,7 @@ class SingleImageBehavior extends Behavior
     {
         $ret = [];
         if ($this->fields) foreach ($this->fields as $field => $fieldName) {
-            $ret[$field] = Image::find()->orderBy('order')->where(['field' => $field, 'object_id' => $this->owner->id, 'class' => \yii\helpers\StringHelper::basename(get_class($this->owner))])->one();
+            $ret[$field] = Image::find()->orderBy('order')->where(['field' => $field, 'object_id' => $this->owner->id, 'class' => $this->owner->className()])->one();
         }
         return $ret;
     }
@@ -65,7 +65,7 @@ class SingleImageBehavior extends Behavior
     {
         SimpleImageFieldAsset::register(\Yii::$app->view);
         CropperAsset::register(\Yii::$app->view);
-        return \Yii::$app->view->renderFile('@vendor/floor12/yii2-imagefield/views/singleForm.php', ['attributeName' => $this->fields[$field], 'field' => $field, 'image' => $this->singleImage[$field], 'class' => \yii\helpers\StringHelper::basename(get_class($this->owner))]);
+        return \Yii::$app->view->renderFile('@vendor/floor12/yii2-imagefield/views/singleForm.php', ['attributeName' => $this->fields[$field], 'field' => $field, 'image' => $this->singleImage[$field], 'classname' => $this->owner->classname(), 'class' => \yii\helpers\StringHelper::basename(get_class($this->owner))]);
     }
 
     public function attach($owner)

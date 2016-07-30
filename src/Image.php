@@ -50,7 +50,7 @@ class Image extends \yii\db\ActiveRecord
 
     public function getPath()
     {
-        return Yii::getAlias('@web') . '/' . Image::IMAGEFIELD_DIR . '/' . $this->file;
+        return  '/' . Image::IMAGEFIELD_DIR . '/' . $this->file;
     }
 
     public function getRealPath()
@@ -60,7 +60,7 @@ class Image extends \yii\db\ActiveRecord
 
     public function getPreviewPath()
     {
-        return Yii::getAlias('@web') . '/' . Image::IMAGEFIELD_DIR . '/preview_' . $this->file;
+        return  '/' . Image::IMAGEFIELD_DIR . '/preview_' . $this->file;
     }
 
     public function getRealPreviewPath()
