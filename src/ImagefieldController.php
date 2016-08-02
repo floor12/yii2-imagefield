@@ -66,7 +66,7 @@ class ImagefieldController extends Controller
                 return json_encode(['id' => $image->id, 'src' => $image->path]);
             else {
                 if (Yii::$app->request->post('field'))
-                    echo Yii::$app->view->renderFile('@vendor/floor12/yii2-imagefield/views/_singleForm.php', ['field' => Yii::$app->request->post('field'), 'image' => $image, 'class' => $image->class]);
+                    echo Yii::$app->view->renderFile('@vendor/floor12/yii2-imagefield/views/_singleForm.php', ['field' => Yii::$app->request->post('field'), 'image' => $image, 'class' => \yii\helpers\StringHelper::basename($image->class)]);
                 else
                     echo Yii::$app->view->renderFile('@vendor/floor12/yii2-imagefield/views/_form.php', ['image' => $image, 'class' => $image->class]);
             }

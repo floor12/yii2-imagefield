@@ -43,7 +43,7 @@ class SingleImageBehavior extends Behavior
             foreach ($this->singleImageArray as $field => $id) {
 
                 $oldImages = Image::find()->where([
-                    'class' => \yii\helpers\StringHelper::basename(get_class($this->owner)),
+                    'class' => $this->owner->className(),
                     'object_id' => $this->owner->id,
                     'field' => $field,
                 ])->all();
